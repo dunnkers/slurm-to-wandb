@@ -96,14 +96,14 @@ def sacct_as_csv(*job_ids: List[str]):
     csv = subprocess.run(
         [
             "sacct",
-            f"--format='{params_str}'",
+            f"--format={params_str}",
             "--starttime",
             "2021-05-20",
-            f"--jobs={job_ids}",
+            f"--jobs={','.join(job_ids)}",  # type: ignore
             "-u",
             f"{user}",
             "--parsable2",
-            "--delimiter=';'",
+            "--delimiter=;",
         ],
         stdout=subprocess.PIPE,
     )
