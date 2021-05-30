@@ -1,4 +1,4 @@
-from .sacct_to_df import (
+ .sacct_to_df  (
     construct_df,
     parse_duration,
     parse_duration_string,
