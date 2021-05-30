@@ -21,3 +21,6 @@ df
 ```
 
 Upload the information to wandb however you like 🙌🏻
+
+## About
+By [Jeroen Overschie](https://dunnkers.com/).
