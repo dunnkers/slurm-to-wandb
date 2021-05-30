@@ -1,11 +1,12 @@
-import sys
+ sys
 
-import wandb
+ wandb
 
-from .sacct_to_df import sacct_as_df
+ .sacct_to_df import sacct_as_df
 
 
-def main():
+
+ main():
     # job ids
     job_ids = sys.argv[1:]
 
@@ -15,17 +16,17 @@ def main():
     print("dataframe constructed ✓")
 
     # upload to wandb
-    for index, result in df.iterrows():
+     index,  df.iterrows():
         wandb.init(
             project="peregrine",
             config=result.to_dict(),
-            id=result["JobID"] if "JobID" in df else None,
-            job_type=result["JobName"] if "JobName" in df else None,
-            name=result["JobID"] if "JobID" in df else None,
-            tags=[result["State"]] if "State" in df else None,
+            id=result["JobID"]  "JobID"  df  ,
+            job_type=result["JobName"]  "JobName"  df  ,
+            name=result["JobID"]  "JobID"  df  ,
+            tags=[result["State"]]  "State"  df  ,
         )
-        wandb.finish(exit_code=result["ExitCode"] if "ExitCode" in result else None)
+        wandb.finish(exit_code=result["ExitCode"] "ExitCode" result  ,)
 
 
-if __name__ == "__main__":
+ __name__ == "__main__":
     main()
