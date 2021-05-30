@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
-from setuptools import find_packages, setup
+ setuptools  find_packages, setup
 
-with open("README.md", "r") as fh:
+ open("README.md", "r") as fh:
     LONG_DESC = fh.read()
     setup(
         name="slurm_to_wandb",
