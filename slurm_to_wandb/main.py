@@ -11,7 +11,7 @@ def main():
 
     # get job information from `sacct`
     print("constructing pandas dataframe...")
-    df = sacct_as_df(job_ids)
+    df = sacct_as_df(*job_ids)
     print("dataframe constructed ✓")
 
     # upload to wandb

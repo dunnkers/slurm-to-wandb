@@ -80,7 +80,7 @@ def construct_df(csv_input: FilePathOrBuffer):
     return df
 
 
-def sacct_as_csv(*job_ids: List[str]):
+def sacct_as_csv(*job_ids: str):
     helpformat = subprocess.run(["sacct", "--helpformat"], stdout=subprocess.PIPE)
     helpformat_str = helpformat.stdout.decode("utf-8")
 
@@ -99,7 +99,7 @@ def sacct_as_csv(*job_ids: List[str]):
             f"--format={params_str}",
             "--starttime",
             "2021-05-20",
-            f"--jobs={','.join(job_ids)}",  # type: ignore
+            f"--jobs={','.join(job_ids)}",
             "-u",
             f"{user}",
             "--parsable2",
@@ -112,7 +112,7 @@ def sacct_as_csv(*job_ids: List[str]):
     return csv_str
 
 
-def sacct_as_df(*job_ids: List[str]):
+def sacct_as_df(*job_ids: str):
     csv = sacct_as_csv(*job_ids)
     csv_input = StringIO(csv)
     df = construct_df(csv_input)
