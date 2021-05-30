@@ -4,7 +4,8 @@ import wandb
 
 from .sacct_to_df import sacct_as_df
 
-if __name__ == "__main__":
+
+def main():
     # job ids
     job_ids = sys.argv[1:]
 
@@ -24,3 +25,7 @@ if __name__ == "__main__":
             tags=[result["State"]],
         )
         wandb.finish(exit_code=result["ExitCode"])
+
+
+if __name__ == "__main__":
+    main()

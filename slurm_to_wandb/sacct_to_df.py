@@ -84,7 +84,9 @@ def sacct_as_csv(*job_ids: List[str]):
     helpformat = subprocess.run(["sacct", "--helpformat"], stdout=subprocess.PIPE)
     helpformat_str = helpformat.stdout.decode("utf-8")
 
-    params = pd.read_csv(StringIO(helpformat_str), sep="\s.*", header=None)
+    params = pd.read_csv(
+        StringIO(helpformat_str), sep="\s.*", header=None, engine="python"
+    )
     params = params.dropna(axis=1)
     params = params.values
     params = np.squeeze(params)
@@ -102,7 +104,8 @@ def sacct_as_csv(*job_ids: List[str]):
             f"{user}",
             "--parsable2",
             "--delimiter=';'",
-        ]
+        ],
+        stdout=subprocess.PIPE,
     )
     csv_str = csv.stdout.decode("utf-8")
 
