@@ -24,3 +24,9 @@ Upload the information to wandb however you like 🙌🏻
 
 ## About
 By [Jeroen Overschie](https://dunnkers.com/).
+
+## Sponsors
+
+Dogecoin Wallet : 
+
+D7RMk96j7BLzTcy1hVqF5fAtpA4khmsyvA
