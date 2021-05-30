@@ -1,0 +1,7 @@
+pandas==1.2.4
+wandb==0.10.31
+numpy==1.20.2
+humanfriendly==9.1
+black==21.4b2
+pytest-runner==5.3.0
+pytest==6.2.3
