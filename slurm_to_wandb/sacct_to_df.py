@@ -45,37 +45,58 @@ def parse_memory(series: pd.Series):
     return series.dropna().apply(parse_memory_string)
 
 
+def parse_date_sting(date_str: str):
+    if not date_str:
+        return date_str
+
+    return pd.to_datetime(date_str)
+
+
+def parse_date(series: pd.Series):
+    return series.dropna().apply(parse_date_sting)
+
+
 def construct_df(csv_input: FilePathOrBuffer):
     # read csv to data frame
-    df = pd.read_csv(
-        csv_input, sep=";", parse_dates=["Eligible", "End", "Start", "Submit"]
-    )
+    df = pd.read_csv(csv_input, sep=";")
+
+    # parse dates
+    df["Eligible"] = parse_date(df["Eligible"]) if "Eligible" in df else None
+    df["End"] = parse_date(df["End"]) if "End" in df else None
+    df["Start"] = parse_date(df["Start"]) if "Start" in df else None
+    df["Submit"] = parse_date(df["Submit"]) if "Submit" in df else None
 
     # parse durations
-    df["Elapsed"] = parse_duration(df["Elapsed"])
-    df["AveCPU"] = parse_duration(df["AveCPU"])
-    df["MinCPU"] = parse_duration(df["MinCPU"])
-    df["UserCPU"] = parse_duration(df["UserCPU"])
-    df["CPUTime"] = parse_duration(df["CPUTime"])
-    df["TotalCPU"] = parse_duration(df["TotalCPU"])
-    df["Timelimit"] = parse_duration(df["Timelimit"])
-    df["Suspended"] = parse_duration(df["Suspended"])
+    df["Elapsed"] = parse_duration(df["Elapsed"]) if "Elapsed" in df else None
+    df["AveCPU"] = parse_duration(df["AveCPU"]) if "AveCPU" in df else None
+    df["MinCPU"] = parse_duration(df["MinCPU"]) if "MinCPU" in df else None
+    df["UserCPU"] = parse_duration(df["UserCPU"]) if "UserCPU" in df else None
+    df["CPUTime"] = parse_duration(df["CPUTime"]) if "CPUTime" in df else None
+    df["TotalCPU"] = parse_duration(df["TotalCPU"]) if "TotalCPU" in df else None
+    df["Timelimit"] = parse_duration(df["Timelimit"]) if "Timelimit" in df else None
+    df["Suspended"] = parse_duration(df["Suspended"]) if "Suspended" in df else None
 
     # parse memory storage: from any amount to Megabytes
-    df["AveCPUFreq"] = parse_memory(df["AveCPUFreq"])
-    df["AveDiskRead"] = parse_memory(df["AveDiskRead"])
-    df["AveDiskWrite"] = parse_memory(df["AveDiskWrite"])
-    df["AveRSS"] = parse_memory(df["AveRSS"])
-    df["AveVMSize"] = parse_memory(df["AveVMSize"])
-    df["MaxDiskRead"] = parse_memory(df["MaxDiskRead"])
-    df["MaxDiskWrite"] = parse_memory(df["MaxDiskWrite"])
-    df["MaxRSS"] = parse_memory(df["MaxRSS"])
-    df["MaxVMSize"] = parse_memory(df["MaxVMSize"])
-    df["ReqMem"] = parse_memory(df["ReqMem"])
+    df["AveCPUFreq"] = parse_memory(df["AveCPUFreq"]) if "AveCPUFreq" in df else None
+    df["AveDiskRead"] = parse_memory(df["AveDiskRead"]) if "AveDiskRead" in df else None
+    df["AveDiskWrite"] = (
+        parse_memory(df["AveDiskWrite"]) if "AveDiskWrite" in df else None
+    )
+    df["AveRSS"] = parse_memory(df["AveRSS"]) if "AveRSS" in df else None
+    df["AveVMSize"] = parse_memory(df["AveVMSize"]) if "AveVMSize" in df else None
+    df["MaxDiskRead"] = parse_memory(df["MaxDiskRead"]) if "MaxDiskRead" in df else None
+    df["MaxDiskWrite"] = (
+        parse_memory(df["MaxDiskWrite"]) if "MaxDiskWrite" in df else None
+    )
+    df["MaxRSS"] = parse_memory(df["MaxRSS"]) if "MaxRSS" in df else None
+    df["MaxVMSize"] = parse_memory(df["MaxVMSize"]) if "MaxVMSize" in df else None
+    df["ReqMem"] = parse_memory(df["ReqMem"]) if "ReqMem" in df else None
 
     # exit code
     parse_exit_code = lambda exit_code_str: int(exit_code_str.split(":")[1])
-    df["ExitCode"] = df["ExitCode"].dropna().apply(parse_exit_code)
+    df["ExitCode"] = (
+        df["ExitCode"].dropna().apply(parse_exit_code) if "ExitCode" in df else None
+    )
 
     return df
 

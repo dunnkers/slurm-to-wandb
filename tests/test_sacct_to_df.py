@@ -1,8 +1,11 @@
 from io import StringIO
 
 import pytest
-from slurm_to_wandb.sacct_to_df import (construct_df, parse_duration_string,
-                                        parse_memory_string)
+from slurm_to_wandb.sacct_to_df import (
+    construct_df,
+    parse_duration_string,
+    parse_memory_string,
+)
 
 
 def test_parse_duration_str():
