@@ -10,7 +10,7 @@
     # job ids
     job_ids = sys.argv[1:]
 
-    # get job information from `sacct`
+    #  job information  `sacct`
     print("constructing pandas dataframe...")
     df = sacct_as_df(*job_ids)
     print("dataframe constructed ✓")
