@@ -19,12 +19,12 @@ def main():
         wandb.init(
             project="peregrine",
             config=result.to_dict(),
-            id=result["JobID"],
-            job_type=result["JobName"],
-            name=result["JobID"],
-            tags=[result["State"]],
+            id=result["JobID"] if "JobID" in df else None,
+            job_type=result["JobName"] if "JobName" in df else None,
+            name=result["JobID"] if "JobID" in df else None,
+            tags=[result["State"]] if "State" in df else None,
         )
-        wandb.finish(exit_code=result["ExitCode"])
+        wandb.finish(exit_code=result["ExitCode"] if "ExitCode" in result else None)
 
 
 if __name__ == "__main__":

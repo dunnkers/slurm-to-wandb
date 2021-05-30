@@ -1,5 +1,5 @@
 # slurm-to-wandb
-[![build status](https://github.com/dunnkers/slurm_to_wandb/actions/workflows/python-app.yml/badge.svg)](https://github.com/dunnkers/slurm_to_wandb/actions/workflows/python-app.yml) [![pypi badge](https://img.shields.io/pypi/v/slurm_to_wandb.svg?maxAge=3600)](https://pypi.org/project/slurm_to_wandb/)
+[![build status](https://github.com/dunnkers/slurm-to-wandb/actions/workflows/python-app.yml/badge.svg)](https://github.com/dunnkers/slurm-to-wandb/actions/workflows/python-app.yml) [![pypi badge](https://img.shields.io/pypi/v/slurm-to-wandb.svg?maxAge=3600)](https://pypi.org/project/slurm-to-wandb/)
 
  Monitor SLURM jobs using Weights and Biases (wandb) 📊
 
