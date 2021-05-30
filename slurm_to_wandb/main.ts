@@ -2,7 +2,7 @@
 
  wandb
 
- .sacct_to_df import sacct_as_df
+ .sacct_to_df sacct_as_df
 
 
 
