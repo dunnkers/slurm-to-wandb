@@ -33,7 +33,7 @@ MANIFEST
 
 # Installer logs
 pip-log.txt
-pip-delete-this-directory.txt
+pip--this-directory.txt
 
 # Unit test / coverage reports
 htmlcov/
