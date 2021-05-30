@@ -2,7 +2,7 @@
 
  setuptools  find_packages, setup
 
- open("README.md", "r") as fh:
+ open("README.md", "r") fh:
     LONG_DESC = fh.read()
     setup(
         name="slurm_to_wandb",
