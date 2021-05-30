@@ -84,7 +84,7 @@ ipython_config.py
 celerybeat-schedule
 
 # SageMath parsed files
-*.sage.py
+.sage.py
 
 # Environments
 .env
