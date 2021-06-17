@@ -11,14 +11,14 @@ pip install slurm-to-wandb
 slurm_to_wandb <job_ids>
 ```
 
-... to upload all `sacct` information to wandb. `<job_ids>` can be multiple space-separated job ids. In the case multiple job id's match, all matched job ids are uploaded (useful, for example, when using job arrays).
+... to upload all `sacct` information to wandb. Currently, uploads to a project called "peregrine" - support for configuring this is planned #4. `<job_ids>` can be multiple space-separated job ids. In the case multiple job id's match, all matched job ids are uploaded (useful, for example, when using job arrays).
 
-To construct a DataFrame with the information yourself, run on the cluster:
+To construct a DataFrame with the information yourself, use the function `slurm_to_wandb.sacct_as_df(*job_ids, **sacct_args)`. `sacct_args` can be any additional args to pass to `sacct`. Run it on the cluster:
 
 ```python
 from slurm_to_wandb import sacct_as_df
 
-df = sacct_as_df(*<job_ids>)
+df = sacct_as_df("job_id_123", "another_job_id", starttime="2021-05-20")
 df
 ```
 
