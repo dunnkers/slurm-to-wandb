@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
     LONG_DESC = fh.read()
     setup(
         name="slurm_to_wandb",
-        version="0.1.0",
+        version="0.1.1",
         packages=find_packages(include=["slurm_to_wandb", "slurm_to_wandb.*"]),
         entry_points={"console_scripts": ["slurm_to_wandb = slurm_to_wandb.main:main"]},
         description="Uploads SLURM job information to WandB for better monitoring.",
