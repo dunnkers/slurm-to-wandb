@@ -8,26 +8,30 @@ import humanfriendly
 import numpy as np
 import pandas as pd
 from pandas._typing import FilePathOrBuffer
+from pandas.errors import ParserError
 
 
 def parse_duration_string(duration_str: str):
     if not duration_str:
         return duration_str
 
-    match = re.match(r"(?:(\d*)-)?((?:\d\d:)?\d\d:\d\d)(?:.(\d*))?", duration_str)
-    assert match is not None, f"incorrect duration format: {duration_str}"
+    try:
+        match = re.match(r"(?:(\d*)-)?((?:\d\d:)?\d\d:\d\d)(?:.(\d*))?", duration_str)
+        assert match is not None, f"incorrect duration format: {duration_str}"
 
-    days, hhmmss, ms = match.groups()
-    if not re.match(r"\d\d:\d\d:\d\d", hhmmss):
-        hhmmss = f"00:{hhmmss}"
+        days, hhmmss, ms = match.groups()
+        if not re.match(r"\d\d:\d\d:\d\d", hhmmss):
+            hhmmss = f"00:{hhmmss}"
 
-    days_duration = pd.to_timedelta(f"{days} days" if days else 0)
-    hhmmss_duration = pd.to_timedelta(hhmmss)
-    ms_duration = pd.to_timedelta(f"{ms} microseconds" if ms else 0)
+        days_duration = pd.to_timedelta(f"{days} days" if days else 0)
+        hhmmss_duration = pd.to_timedelta(hhmmss)
+        ms_duration = pd.to_timedelta(f"{ms} microseconds" if ms else 0)
 
-    duration = days_duration + hhmmss_duration + ms_duration
-    duration_seconds = duration.total_seconds()
-    return duration_seconds
+        duration = days_duration + hhmmss_duration + ms_duration
+        duration_seconds = duration.total_seconds()
+        return duration_seconds
+    except Exception:
+        return None
 
 
 def parse_duration(series: pd.Series):
@@ -38,7 +42,10 @@ def parse_memory_string(memory_str: str):
     if not memory_str:
         return memory_str
 
-    return humanfriendly.parse_size(memory_str) / 1e6
+    try:
+        return humanfriendly.parse_size(memory_str) / 1e6
+    except Exception:
+        return None
 
 
 def parse_memory(series: pd.Series):
@@ -49,7 +56,10 @@ def parse_date_sting(date_str: str):
     if not date_str:
         return date_str
 
-    return pd.to_datetime(date_str)
+    try:
+        return pd.to_datetime(date_str)
+    except Exception:
+        return None
 
 
 def parse_date(series: pd.Series):
@@ -101,10 +111,12 @@ def construct_df(csv_input: FilePathOrBuffer):
     return df
 
 
-def sacct_as_csv(*job_ids: str):
+def sacct_as_csv(*job_ids: str, **sacct_args):
+    # obtain all possible sacct parameters using `sacct --helpformat`
     helpformat = subprocess.run(["sacct", "--helpformat"], stdout=subprocess.PIPE)
     helpformat_str = helpformat.stdout.decode("utf-8")
 
+    # parse helpformat parameters
     params = pd.read_csv(
         StringIO(helpformat_str), sep="\s.*", header=None, engine="python"
     )
@@ -113,21 +125,25 @@ def sacct_as_csv(*job_ids: str):
     params = np.squeeze(params)
     params_str = ",".join(params)
 
+    # construct sacct command line arguments
     user = os.environ.get("USER")
-    csv = subprocess.run(
-        [
-            "sacct",
-            f"--format={params_str}",
-            "--starttime",
-            "2021-05-20",
-            f"--jobs={','.join(job_ids)}",
-            "-u",
-            f"{user}",
-            "--parsable2",
-            "--delimiter=;",
-        ],
-        stdout=subprocess.PIPE,
-    )
+    jobs = ",".join(job_ids)
+    sacct_command = [
+        "sacct",
+        f"--format={params_str}",
+        f"--jobs={jobs}",
+        "-u",
+        f"{user}",
+        "--parsable2",
+        "--delimiter=';'",
+    ]
+
+    for parameter, value in sacct_args.items():
+        sacct_command.append(f"--{parameter}")
+        sacct_command.append(str(value))
+
+    # run `sacct`
+    csv = subprocess.run(sacct_command, stdout=subprocess.PIPE)
     csv_str = csv.stdout.decode("utf-8")
 
     return csv_str
