@@ -7,11 +7,13 @@
 On your cluster, login to wandb using the [cli](https://github.com/wandb/client), then run:
 
 ```shell
-pip install slurm_to_wandb
+pip install slurm-to-wandb
 slurm_to_wandb <job_ids>
 ```
 
-... to upload all `sacct` information to wandb. To construct a DataFrame with the information yourself, run:
+... to upload all `sacct` information to wandb. `<job_ids>` can be multiple space-separated job ids. In the case multiple job id's match, all matched job ids are uploaded (useful, for example, when using job arrays).
+
+To construct a DataFrame with the information yourself, run on the cluster:
 
 ```python
 from slurm_to_wandb import sacct_as_df
@@ -20,7 +22,7 @@ df = sacct_as_df(*<job_ids>)
 df
 ```
 
-Upload the information to wandb however you like 🙌🏻
+You can now upload the information to wandb however you like 🙌🏻
 
 ## About
 By [Jeroen Overschie](https://dunnkers.com/).
