@@ -135,7 +135,7 @@ def sacct_as_csv(*job_ids: str, **sacct_args):
         "-u",
         f"{user}",
         "--parsable2",
-        "--delimiter=';'",
+        "--delimiter=;",
     ]
 
     for parameter, value in sacct_args.items():
